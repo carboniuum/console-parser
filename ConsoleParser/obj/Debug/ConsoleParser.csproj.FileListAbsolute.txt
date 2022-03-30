@@ -1,0 +1,16 @@
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\ConsoleParser.exe.config
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\ConsoleParser.exe
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\ConsoleParser.pdb
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\obj\Debug\ConsoleParser.csprojAssemblyReference.cache
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\obj\Debug\ConsoleParser.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\obj\Debug\ConsoleParser.exe
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\obj\Debug\ConsoleParser.pdb
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\AngleSharp.dll
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\System.Buffers.dll
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\System.Text.Encoding.CodePages.dll
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\AngleSharp.xml
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\System.Buffers.xml
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\System.Text.Encoding.CodePages.xml
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\obj\Debug\ConsoleParser.csproj.CopyComplete
