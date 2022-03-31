@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ConsoleParser.Arts;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text;
 
 namespace ConsoleParser
 {
@@ -12,15 +13,16 @@ namespace ConsoleParser
         static async Task Main(string[] args)
         {
             Main main = new Main();
+            StringBuilder sb = new StringBuilder();
 
             Console.WriteLine("Добро пожаловать в приложение по скачыванию аниме!");
             Console.Write($"Введите название аниме, которое хотите скачать{Environment.NewLine}" +
-                $"(Рекомендуется ввести роигинальное название аниме латинскими буквами)" +
+                $"(Рекомендуется ввести роигинальное название аниме латинскими буквами){Environment.NewLine}" +
                 $">>> ");
 
             string userInput = Console.ReadLine();
 
-            var result = await main.GetSearchResult(userInput);
+            var result = await main.GetSearchResultAsync(userInput);
 
             if (result.First().Key.Contains("season"))
             {
@@ -44,13 +46,44 @@ namespace ConsoleParser
                 }
                 seasonOptions = seasonOptions.Remove(seasonOptions.Length - 2);
                 Console.WriteLine(seasonOptions);
+                Console.Write(">>> ");
+                string seasonChoice = Console.ReadLine();
+                result = result.Where(res => res.Key.Contains($"season-{seasonChoice}"))
+                                .ToDictionary(k => k.Key, v => v.Value);
             }
 
-     /*       foreach (var item in result)
+            sb.AppendLine("Выберите серию. Введите только номер эпизода.");
+
+            foreach (var item in result.Values)
             {
-                Console.WriteLine($"{item.Key} {item.Value}");
+                sb.AppendLine(item);
             }
-*/
+
+            Console.WriteLine(sb.ToString());
+            Console.Write(">>> ");
+            string episodeChoice = Console.ReadLine();
+            string url = result.FirstOrDefault(res => res.Key.Contains($"episode-{episodeChoice}")).Key;
+            var list = await main.GetEpisodeAsync(url);
+            sb.Clear();
+
+            sb.AppendLine("Выберите качество.");
+
+            foreach (var item in list)
+            {
+                sb.AppendLine(item.Quality.ToString());
+            }
+
+            Console.WriteLine(sb.ToString());
+            Console.Write(">>> ");
+            string qualityChoice = Console.ReadLine();
+            var video = list.FirstOrDefault(v => v.Quality == Int32.Parse(qualityChoice));
+
+            main.DownloadVideo(video);
+
+            /*foreach (var item in result)
+            {
+                Console.WriteLine(item.Key);
+            }*/
 
             Console.ReadKey();
         }

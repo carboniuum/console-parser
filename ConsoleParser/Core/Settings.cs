@@ -12,7 +12,8 @@ namespace ConsoleParser.Core
 
         public static string UserAgent { get; private set; } = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36";
 
-        public static async Task<Cookie> GetCookie()
+        public static Cookie SiteCookie { get; private set; }
+        public static async Task SetCookieAsync()
         {
             var cookieContainer = new CookieContainer();
             var uri = new Uri(BaseUrl);
@@ -22,7 +23,7 @@ namespace ConsoleParser.Core
                 {
                     httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
                     await httpClient.GetAsync(uri);
-                    return cookieContainer.GetCookies(uri).Cast<Cookie>().ToList().First();
+                    SiteCookie = cookieContainer.GetCookies(uri).Cast<Cookie>().ToList().First();
                 }
             }
         }

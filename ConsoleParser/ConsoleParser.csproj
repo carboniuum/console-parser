@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Arts\Art.cs" />
     <Compile Include="Core\Main.cs" />
+    <Compile Include="Core\Models\Video.cs" />
     <Compile Include="Core\Settings.cs" />
     <Compile Include="Extensions\DictionaryExtension.cs" />
     <Compile Include="Program.cs" />

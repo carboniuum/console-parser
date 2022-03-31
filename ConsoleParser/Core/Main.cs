@@ -8,26 +8,28 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleParser.Extensions;
+using ConsoleParser.Core.Models;
 
 namespace ConsoleParser.Core
 {
     public class Main
     {
         public HtmlParser Parser { get; private set; }
+        public Uri BaseAddress { get; private set; }
 
         public Main()
         {
             Parser = new HtmlParser();
+            BaseAddress = new Uri(Settings.BaseUrl);
         }
 
-        public async Task<Dictionary<string, string>> GetSearchResult(string query)
+        public async Task<Dictionary<string, string>> GetSearchResultAsync(string query)
         {
-            var baseAddress = new Uri(Settings.BaseUrl);
             var cookieContainer = new CookieContainer();
-            var sb = new StringBuilder();
+
             using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
             {
-                using (var client = new HttpClient(handler) { BaseAddress = baseAddress })
+                using (var client = new HttpClient(handler) { BaseAddress = this.BaseAddress })
                 {
                     client.DefaultRequestHeaders.Add("User-Agent", Settings.UserAgent);
                     var body = new FormUrlEncodedContent(new[]
@@ -35,7 +37,8 @@ namespace ConsoleParser.Core
                         new KeyValuePair<string, string>("makeme", "yes"),
                         new KeyValuePair<string, string>("ystext", query)
                     });
-                    cookieContainer.Add(baseAddress, await Settings.GetCookie());
+                    await Settings.SetCookieAsync();
+                    cookieContainer.Add(this.BaseAddress, Settings.SiteCookie);
                     var result = await client.PostAsync("/search", body);
                     string resultContent = await result.Content.ReadAsStringAsync();
                     var document = await Parser.ParseDocumentAsync(resultContent);
@@ -52,6 +55,62 @@ namespace ConsoleParser.Core
 
                     return episodes;
                 }
+            }
+        }
+
+        public async Task<List<Video>> GetEpisodeAsync(string url)
+        {
+            var cookieContainer = new CookieContainer();
+            var episodesList = new List<Video>();
+
+            using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
+            {
+                using (var client = new HttpClient(handler) { BaseAddress = this.BaseAddress })
+                {
+                    client.DefaultRequestHeaders.Add("User-Agent", Settings.UserAgent);
+                    cookieContainer.Add(this.BaseAddress, Settings.SiteCookie);
+                    string result = await client.GetStringAsync(url);
+                    var document = await Parser.ParseDocumentAsync(result);
+                    var episodeData = document.QuerySelectorAll("#my-player source");
+
+                    foreach (var data in episodeData)
+                    {
+                        episodesList.Add(
+                            new Video
+                            {
+                                Quality = Int32.Parse(data.GetAttribute("res")),
+                                Source = data.GetAttribute("src")
+                            }
+                        ); ;
+                    }
+
+                    return episodesList;
+                }
+            }
+        }
+
+        public void DownloadVideo(Video video)
+        {
+            /* using (WebClient client = new WebClient())
+             {
+                 client.DownloadProgressChanged += (o, e) =>
+                 {
+                     Console.WriteLine($"Идёт скачивание: {e.ProgressPercentage}%.");
+                 };
+
+                 client.DownloadDataCompleted += (o, e) =>
+                 {
+                     Console.WriteLine("Скачивание завершено!");
+                 };
+
+                 client.DownloadFileAsync(new Uri(video.Source), "video.mp4");
+             }*/
+            
+            using (var client = new WebClient())
+            {
+                client.Headers.Add("User-Agent", Settings.UserAgent);
+                client.Headers.Add(HttpRequestHeader.Cookie, Settings.SiteCookie.ToString());
+                client.DownloadFile(video.Source, "video.mp4");
             }
         }
     }
