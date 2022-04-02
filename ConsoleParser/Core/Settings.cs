@@ -13,16 +13,17 @@ namespace ConsoleParser.Core
         public static string UserAgent { get; private set; } = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36";
 
         public static Cookie SiteCookie { get; private set; }
+        
         public static async Task SetCookieAsync()
         {
             var cookieContainer = new CookieContainer();
             var uri = new Uri(BaseUrl);
-            using (var httpClientHandler = new HttpClientHandler { CookieContainer = cookieContainer })
+            using (var handler = new HttpClientHandler { CookieContainer = cookieContainer })
             {
-                using (var httpClient = new HttpClient(httpClientHandler))
+                using (var client = new HttpClient(handler))
                 {
-                    httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
-                    await httpClient.GetAsync(uri);
+                    client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
+                    await client.GetAsync(uri);
                     SiteCookie = cookieContainer.GetCookies(uri).Cast<Cookie>().ToList().First();
                 }
             }

@@ -14,3 +14,4 @@ C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\System.Buffers.xml
 C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\System.Text.Encoding.CodePages.xml
 C:\Users\User\Desktop\ConsoleParser\ConsoleParser\obj\Debug\ConsoleParser.csproj.CopyComplete
+C:\Users\User\Desktop\ConsoleParser\ConsoleParser\bin\Debug\Goblinfactory.Konsole.dll

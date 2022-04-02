@@ -1,14 +1,14 @@
 ﻿using AngleSharp.Html.Parser;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using ConsoleParser.Extensions;
 using ConsoleParser.Core.Models;
+using Konsole;
+using Konsole.Forms;
 
 namespace ConsoleParser.Core
 {
@@ -89,28 +89,26 @@ namespace ConsoleParser.Core
             }
         }
 
-        public void DownloadVideo(Video video)
+        public void DownloadVideo(Video video, string path)
         {
-            /* using (WebClient client = new WebClient())
-             {
-                 client.DownloadProgressChanged += (o, e) =>
-                 {
-                     Console.WriteLine($"Идёт скачивание: {e.ProgressPercentage}%.");
-                 };
-
-                 client.DownloadDataCompleted += (o, e) =>
-                 {
-                     Console.WriteLine("Скачивание завершено!");
-                 };
-
-                 client.DownloadFileAsync(new Uri(video.Source), "video.mp4");
-             }*/
-            
-            using (var client = new WebClient())
+            using (var wc = new WebClient())
             {
-                client.Headers.Add("User-Agent", Settings.UserAgent);
-                client.Headers.Add(HttpRequestHeader.Cookie, Settings.SiteCookie.ToString());
-                client.DownloadFile(video.Source, "video.mp4");
+                wc.Headers.Add("User-Agent", Settings.UserAgent);
+                wc.Headers.Add(HttpRequestHeader.Cookie, Settings.SiteCookie.ToString());
+
+                var pb = new ProgressBar(100, 10);
+
+                wc.DownloadProgressChanged += (o, e) =>
+                {
+                    pb.Refresh(e.ProgressPercentage, "Скачивание ");
+                };
+
+                wc.DownloadFileCompleted += (o, e) =>
+                {
+                    Console.WriteLine("Скачивание завершено!");
+                };
+
+                wc.DownloadFileAsync(new Uri(video.Source), path);
             }
         }
     }
