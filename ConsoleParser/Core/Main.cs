@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using ConsoleParser.Extensions;
 using ConsoleParser.Core.Models;
 using Konsole;
-using Konsole.Forms;
 
 namespace ConsoleParser.Core
 {
