@@ -8,9 +8,17 @@ namespace ConsoleParser
     {
         static async Task Main(string[] args)
         {
-            await new UserInteraction().StartAsync();
+            try
+            {
+                await new UserInteraction().StartAsync();
+            }
+            catch
+            {
+                Console.WriteLine("Ничего не найдено. Убедитесь, что вы ввели название аним правильно. " +
+                    "(Например: death note, tokyo ghoul...)" + Environment.NewLine);
 
-            Console.ReadKey();
+                await new UserInteraction().StartAsync();
+            }
         }
     }
 

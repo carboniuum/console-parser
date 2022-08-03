@@ -16,9 +16,15 @@ namespace ConsoleParser.Core
             Console.WriteLine("Добро пожаловать в приложение по скачыванию аниме!");
             Console.Write($"Введите название аниме, которое хотите скачать{Environment.NewLine}" +
                 $"(Рекомендуется ввести роигинальное название аниме латинскими буквами){Environment.NewLine}" +
+                $"Введите q для выхода{Environment.NewLine}" +
                 $">>> ");
 
             string userInput = Console.ReadLine();
+
+            if (userInput.ToLower() == "q")
+            {
+                Environment.Exit(0);
+            }
 
             var result = await main.GetSearchResultAsync(userInput);
 
